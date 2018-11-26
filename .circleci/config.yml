@@ -15,6 +15,8 @@ jobs:
       # - image: circleci/postgres:9.4
 
     working_directory: ~/repo
+    codecov:
+      token: 6416b1f4-df35-4cef-9cd5-d7c04952fbf7
 
     environment:
       # Customize the JVM maximum heap limit
