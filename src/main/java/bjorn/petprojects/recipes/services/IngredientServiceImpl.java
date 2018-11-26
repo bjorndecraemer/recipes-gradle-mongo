@@ -1,12 +1,12 @@
 package bjorn.petprojects.recipes.services;
 
-import bjorn.petprojects.recipes.repositories.RecipeRepository;
-import bjorn.petprojects.recipes.repositories.UnitOfMeasureRepository;
 import bjorn.petprojects.recipes.commands.IngredientCommand;
 import bjorn.petprojects.recipes.converters.IngredientCommandToIngredient;
 import bjorn.petprojects.recipes.converters.IngredientToIngredientCommand;
 import bjorn.petprojects.recipes.domain.Ingredient;
 import bjorn.petprojects.recipes.domain.Recipe;
+import bjorn.petprojects.recipes.repositories.RecipeRepository;
+import bjorn.petprojects.recipes.repositories.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,8 +107,10 @@ public class IngredientServiceImpl implements IngredientService {
                         .findFirst();
             }
 
+            IngredientCommand ingredientCommandSaved = ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+            ingredientCommandSaved.setRecipeId(recipe.getId());
             //to do check for fail
-            return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+            return ingredientCommandSaved;
         }
 
     }

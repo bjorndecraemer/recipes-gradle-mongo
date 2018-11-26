@@ -4,7 +4,6 @@ import bjorn.petprojects.recipes.domain.*;
 import bjorn.petprojects.recipes.repositories.CategoryRepository;
 import bjorn.petprojects.recipes.repositories.RecipeRepository;
 import bjorn.petprojects.recipes.repositories.UnitOfMeasureRepository;
-import bjorn.petprojects.recipes.domain.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Created by jt on 6/13/17.
+ *
  */
 @Slf4j
 @Component
