@@ -4,11 +4,7 @@ import bjorn.petprojects.recipes.domain.*;
 import bjorn.petprojects.recipes.repositories.CategoryRepository;
 import bjorn.petprojects.recipes.repositories.RecipeRepository;
 import bjorn.petprojects.recipes.repositories.UnitOfMeasureRepository;
-import bjorn.petprojects.recipes.repositories.reactive.CategoryReactiveRepository;
-import bjorn.petprojects.recipes.repositories.reactive.RecipeReactiveRepository;
-import bjorn.petprojects.recipes.repositories.reactive.UnitOfMeasureReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -30,13 +26,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-    @Autowired
-    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
-    @Autowired
-    RecipeReactiveRepository recipeReactiveRepository;
-    @Autowired
-    CategoryReactiveRepository categoryReactiveRepository;
-
 
     public RecipeBootstrap(CategoryRepository categoryRepository,
                            RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
@@ -55,11 +44,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         loadUom();
         recipeRepository.saveAll(getRecipes());
         log.debug("Loading Bootstrap Data");
-
-//        log.error("###########");
-//        log.error("UOM Count : "+unitOfMeasureReactiveRepository.count().block().toString());
-//        log.error("Recipe Count : "+recipeReactiveRepository.count().block().toString());
-//        log.error("category Count : "+categoryReactiveRepository.count().block().toString());
     }
 
     private void loadCategories(){
