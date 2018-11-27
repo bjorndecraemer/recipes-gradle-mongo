@@ -1,5 +1,6 @@
 package bjorn.petprojects.recipes.repositories;
 
+import bjorn.petprojects.recipes.bootstrap.RecipeBootstrap;
 import bjorn.petprojects.recipes.domain.UnitOfMeasure;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +21,20 @@ public class UnitOfMeasureRepositoryIT {
     @Autowired
     UnitOfMeasureRepository unitOfMeasureRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    RecipeRepository recipeRepository;
+
 
     @Before
     public void setUp() throws Exception {
-
+        recipeRepository.deleteAll();
         unitOfMeasureRepository.deleteAll();
+        categoryRepository.deleteAll();
+        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(categoryRepository,recipeRepository,unitOfMeasureRepository);
+        recipeBootstrap.onApplicationEvent(null);
     }
 
     @Test

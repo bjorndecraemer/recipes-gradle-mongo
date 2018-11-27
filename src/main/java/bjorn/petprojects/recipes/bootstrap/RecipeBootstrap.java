@@ -56,10 +56,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         recipeRepository.saveAll(getRecipes());
         log.debug("Loading Bootstrap Data");
 
-        log.error("###########");
-        log.error("UOM Count : "+unitOfMeasureReactiveRepository.count().block().toString());
-        log.error("Recipe Count : "+recipeReactiveRepository.count().block().toString());
-        log.error("category Count : "+categoryReactiveRepository.count().block().toString());
+//        log.error("###########");
+//        log.error("UOM Count : "+unitOfMeasureReactiveRepository.count().block().toString());
+//        log.error("Recipe Count : "+recipeReactiveRepository.count().block().toString());
+//        log.error("category Count : "+categoryReactiveRepository.count().block().toString());
     }
 
     private void loadCategories(){
