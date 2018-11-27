@@ -3,14 +3,15 @@ package bjorn.petprojects.recipes.services;
 import bjorn.petprojects.recipes.commands.UnitOfMeasureCommand;
 import bjorn.petprojects.recipes.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import bjorn.petprojects.recipes.domain.UnitOfMeasure;
-import bjorn.petprojects.recipes.repositories.UnitOfMeasureRepository;
+import bjorn.petprojects.recipes.repositories.reactive.UnitOfMeasureReactiveRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -21,7 +22,7 @@ public class UnitOfMeasureServiceImplTest {
     UnitOfMeasureService service;
 
     @Mock
-    UnitOfMeasureRepository unitOfMeasureRepository;
+    UnitOfMeasureReactiveRepository unitOfMeasureRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -33,7 +34,7 @@ public class UnitOfMeasureServiceImplTest {
     @Test
     public void listAllUoms() throws Exception {
         //given
-        Set<UnitOfMeasure> unitOfMeasures = new HashSet<>();
+        List<UnitOfMeasure> unitOfMeasures = new ArrayList<>();
         UnitOfMeasure uom1 = new UnitOfMeasure();
         uom1.setId("1");
         unitOfMeasures.add(uom1);
@@ -42,10 +43,10 @@ public class UnitOfMeasureServiceImplTest {
         uom2.setId("2");
         unitOfMeasures.add(uom2);
 
-        when(unitOfMeasureRepository.findAll()).thenReturn(unitOfMeasures);
+        when(unitOfMeasureRepository.findAll()).thenReturn(Flux.just(uom1, uom2));
 
         //when
-        Set<UnitOfMeasureCommand> commands = service.listAllUoms();
+        List<UnitOfMeasureCommand> commands = service.listAllUoms().collectList().block();
 
         //then
         assertEquals(2, commands.size());
