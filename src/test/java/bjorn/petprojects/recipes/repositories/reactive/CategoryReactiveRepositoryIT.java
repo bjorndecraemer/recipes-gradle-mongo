@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest
@@ -25,7 +26,7 @@ public class CategoryReactiveRepositoryIT {
     @Test
     public void testSave(){
         Category cat1 = new Category();
-        cat1.setDescription("cat1desc");
+        cat1.setDescription("Foo");
         Category cat2 = new Category();
         cat2.setDescription("cat2desc");
         Category cat3 = new Category();
@@ -35,5 +36,16 @@ public class CategoryReactiveRepositoryIT {
         categoryReactiveRepository.save(cat3).block();
         Long count = categoryReactiveRepository.count().block();
         assertEquals(Long.valueOf(3L),count);
+    }
+    @Test
+    public void testFindByDescription() throws Exception{
+        Category cat1 = new Category();
+        cat1.setDescription("Foo Bar");
+
+        categoryReactiveRepository.save(cat1).block();
+
+        Category fetchedCategory = categoryReactiveRepository.findBydescription("Foo Bar").block();
+        assertNotNull(fetchedCategory.getId());
+        assertNotNull(fetchedCategory.getDescription());
     }
 }

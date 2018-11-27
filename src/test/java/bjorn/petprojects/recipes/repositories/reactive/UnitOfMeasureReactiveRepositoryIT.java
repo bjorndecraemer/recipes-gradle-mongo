@@ -1,6 +1,7 @@
 package bjorn.petprojects.recipes.repositories.reactive;
 
 import bjorn.petprojects.recipes.domain.UnitOfMeasure;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,5 +34,19 @@ public class UnitOfMeasureReactiveRepositoryIT {
         unitOfMeasureReactiveRepository.save(uOM2).block();
         Long count = unitOfMeasureReactiveRepository.count().block();
         assertEquals(Long.valueOf(2L),count);
+    }
+
+    @Test
+    public void testFindByDescription(){
+        UnitOfMeasure uOM1 = new UnitOfMeasure();
+        UnitOfMeasure uOM2 = new UnitOfMeasure();
+        uOM1.setDescription("Spoon");
+        uOM2.setDescription("Cup");
+        unitOfMeasureReactiveRepository.save(uOM1).block();
+        unitOfMeasureReactiveRepository.save(uOM2).block();
+
+        UnitOfMeasure fetchedUnitOfMeasure = unitOfMeasureReactiveRepository.findByDescription("Cup").block();
+        Assert.assertNotNull(fetchedUnitOfMeasure.getId());
+        Assert.assertNotNull(fetchedUnitOfMeasure.getDescription());
     }
 }
