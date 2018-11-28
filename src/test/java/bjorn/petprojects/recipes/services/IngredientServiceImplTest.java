@@ -114,10 +114,11 @@ public class IngredientServiceImplTest {
         Ingredient ingredient = new Ingredient();
         ingredient.setId("3");
         recipe.addIngredient(ingredient);
-        ingredient.setRecipe(recipe);
+        //ingredient.setRecipe(recipe);
         Mono<Recipe> recipeMono = Mono.just(recipe);
 
         when(recipeReactiveRepository.findById(anyString())).thenReturn(recipeMono);
+        when(recipeReactiveRepository.save(any())).thenReturn(Mono.just(recipe));
 
         //when
         ingredientService.deleteById("1", "3");
