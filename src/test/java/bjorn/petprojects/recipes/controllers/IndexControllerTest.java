@@ -64,7 +64,7 @@ public class IndexControllerTest {
 
         when(recipeService.getRecipes()).thenReturn(Flux.fromIterable(recipes));
 
-        ArgumentCaptor<List<Recipe>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<List<Recipe>> argumentCaptor = ArgumentCaptor.forClass(ArrayList.class);
 
         //when
         String viewName = controller.getIndexPage(model);
