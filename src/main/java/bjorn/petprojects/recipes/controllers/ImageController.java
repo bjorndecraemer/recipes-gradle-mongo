@@ -17,9 +17,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by jt on 7/3/17.
- */
 @Controller
 public class ImageController {
 
@@ -48,7 +45,7 @@ public class ImageController {
 
     @GetMapping("recipe/{id}/recipeimage")
     public void renderImageFromDB(@PathVariable String id, HttpServletResponse response) throws IOException {
-        RecipeCommand recipeCommand = recipeService.findCommandById(id);
+        RecipeCommand recipeCommand = recipeService.findCommandById(id).block();
 
         if (recipeCommand.getImage() != null) {
             byte[] byteArray = new byte[recipeCommand.getImage().length];
