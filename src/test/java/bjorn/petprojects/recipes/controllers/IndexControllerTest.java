@@ -1,14 +1,24 @@
 package bjorn.petprojects.recipes.controllers;
 
 import bjorn.petprojects.recipes.domain.Recipe;
+import bjorn.petprojects.recipes.services.ImageService;
+import bjorn.petprojects.recipes.services.IngredientService;
 import bjorn.petprojects.recipes.services.RecipeService;
+import bjorn.petprojects.recipes.services.UnitOfMeasureService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.ui.Model;
 import reactor.core.publisher.Flux;
 
@@ -17,37 +27,55 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-
+@RunWith(SpringRunner.class)
+@WebFluxTest
+@Import(IndexController.class)
+@WebAppConfiguration
 public class IndexControllerTest {
 
-    @Mock
+    @Autowired
+    WebTestClient webTestClient;
+
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @MockBean
     RecipeService recipeService;
+
+    @MockBean
+    ImageService imageService;
+
+    @MockBean
+    IngredientService ingredientService;
+
+    @MockBean
+    UnitOfMeasureService unitOfMeasureService;
 
     @Mock
     Model model;
 
+    @Autowired
     IndexController controller;
+
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
-        controller = new IndexController(recipeService);
+        //webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();
+        //webTestClient = WebTestClient.bindToController(new IndexController(recipeService)).configureClient().baseUrl("/").build();
+        WebTestClient.bindToApplicationContext(applicationContext).build();
     }
 
     @Test
     public void testMockMVC() throws Exception {
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         when(recipeService.getRecipes()).thenReturn(Flux.empty());
 
-        mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"));
+        webTestClient.get().uri("/")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .exchange()
+                .expectStatus().isOk();
+                //.expectBody(Void.class);
     }
 
     @Test
